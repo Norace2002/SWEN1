@@ -2,6 +2,7 @@ package at.fhtw;
 
 import at.fhtw.httpserver.http.Method;
 import at.fhtw.httpserver.server.Request;
+import at.fhtw.sampleapp.serviceUser.UserService;
 //import at.fhtw.sampleapp.service.weather.WeatherService;
 
 import java.io.IOException;
@@ -13,6 +14,9 @@ public class Main {
         Request request = new Request();
         request.setMethod(Method.GET);
         System.out.println(service.handleRequest(request));*/
-        System.out.println("Hello World");
+
+        UserService service = new UserService();
+        Request request = new Request();
+
     }
 }

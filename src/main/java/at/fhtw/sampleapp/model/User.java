@@ -11,9 +11,9 @@ public class User {
     private String password;
     @JsonAlias({"coins"})
     private Integer coins;
-    @JsonAlias({"stack"})
+    /*@JsonAlias({"stack"})
     private Card[] stack;
-    @JsonAlias({"stack"})
+    @JsonAlias({"stack"})*/
     private Integer eloScore;
 
 
@@ -22,12 +22,12 @@ public class User {
     //Default Constructor
     public User(){}
 
-    public User(String username, String password, Card[] stack) {
+    public User(String username, String password, Integer coins, Integer eloScore /*Card[] stack*/ ) {
         this.username = username;
         this.password = password;
-        this.coins = 20;
-        this.stack = stack;
-        this.eloScore = 100;
+        this.coins = coins; //20 at the beginning
+        this.eloScore = eloScore; //100 at the beginning
+        //this.stack = stack;
     }
 
     //Setter
@@ -43,11 +43,11 @@ public class User {
         this.coins = coins;
     }
 
-    public void setElementType(Card[] stack) {
-        this.stack = stack;
-    }
-
     public void setCardType(Integer eloScore) {
         this.eloScore = eloScore;
     }
+
+    /*public void setElementType(Card[] stack) {
+        this.stack = stack;
+    }*/
 }
