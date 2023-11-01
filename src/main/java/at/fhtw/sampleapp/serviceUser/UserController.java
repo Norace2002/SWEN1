@@ -14,18 +14,17 @@ import java.util.List;
 public class UserController extends Controller {
     // POST /users
 
-    public Response compareUserPerRepository() {
+    public Response createUserPerRepository() {
         UnitOfWork unitOfWork = new UnitOfWork();
         try (unitOfWork){
-            Collection<User> userData = new UserRepository(unitOfWork).createUser();
+            // "{\"Username\":\"kienboec\", \"Password\":\"daniel\"}"
+            new UserRepository(unitOfWork).createUser();
 
-            // "[ { \"id\": 1, \"city\": \"Vienna\", \"temperature\": 9.0 }, { ... }, { ... } ]"
-            String userDataJSON = this.getObjectMapper().writeValueAsString(userData);
             unitOfWork.commitTransaction();
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
-                    userDataJSON
+                    "[]"
             );
         } catch (Exception e) {
             e.printStackTrace();

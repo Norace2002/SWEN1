@@ -3,7 +3,7 @@ package at.fhtw.sampleapp.dal.repository;
 import at.fhtw.sampleapp.dal.DataAccessException;
 import at.fhtw.sampleapp.dal.UnitOfWork;
 import at.fhtw.sampleapp.model.User;
-import at.fhtw.sampleapp.model.Weather;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,29 +19,35 @@ public class UserRepository {
         this.unitOfWork = unitOfWork;
     }
 
-    public Collection<User> createUser() {
+    public void createUser() {
         try (PreparedStatement preparedStatement =
                      this.unitOfWork.prepareStatement("""
-                    select * from weather
-                    where region = ?
+                    INSERT INTO accounts(username, password, coins, eloScore)
+                    SELECT ?, ?, ? ,?
+                    WHERE NOT EXISTS(
+                        SELECT 1
+                        FROM accounts
+                        WHERE username = ?
+                    );
                 """))
         {
-            preparedStatement.setString(1, "Europe");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Collection<User> userRows = new ArrayList<>();
-            while(resultSet.next())
-            {
-                User user = new User(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getInt(3),
-                        resultSet.getInt(4));
-                userRows.add(user);
+            //Fill the '?' // Später username und Passwort mit mitgegeben Werten abspeichern
+            preparedStatement.setString(1, "Nino");
+            preparedStatement.setString(2, "Passwort");
+            preparedStatement.setInt(3, 20);
+            preparedStatement.setInt(4, 100);
+            preparedStatement.setString(5, "Nino");
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("User was successfully added");
+            } else {
+                System.out.println("Username is already taken");
             }
 
-            return userRows;
         } catch (SQLException e) {
-            throw new DataAccessException("Select nicht erfolgreich", e);
+            throw new DataAccessException("Select not successful", e);
         }
     }
 }

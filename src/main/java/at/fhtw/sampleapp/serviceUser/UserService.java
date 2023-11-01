@@ -16,8 +16,9 @@ public class UserService implements Service {
 
     @Override
     public Response handleRequest(Request request) {
-        if (request.getMethod() == Method.GET) {
+        if (request.getMethod() == Method.POST) {
             //return this.weatherController.getWeatherPerRepository();
+            return this.userController.createUserPerRepository();
         }
 
         return new Response(

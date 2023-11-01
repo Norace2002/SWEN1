@@ -17,6 +17,8 @@ public class Main {
 
         UserService service = new UserService();
         Request request = new Request();
+        request.setMethod(Method.POST);
+        System.out.println(service.handleRequest(request));
 
     }
 }
