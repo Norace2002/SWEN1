@@ -1,5 +1,5 @@
 package at.fhtw.httpserver.server;
 
-public interface Service {
+public interface RestController {
     Response handleRequest(Request request);
 }

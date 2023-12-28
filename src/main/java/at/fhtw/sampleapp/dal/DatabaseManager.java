@@ -11,7 +11,7 @@ public enum DatabaseManager {
     {
         try {
             return DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/postgres",
+                    "jdbc:postgresql://localhost:5432/mydb",
                     "norace",
                     "postgres");
         } catch (SQLException e) {
