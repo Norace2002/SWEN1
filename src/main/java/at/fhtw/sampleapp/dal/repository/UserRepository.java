@@ -6,6 +6,8 @@ import java.util.Collection;
 
 public interface UserRepository {
 
-    void createUser(String username, String password);
+    String createUser(String username, String password);
+    String compareUser(String username, String password);
+    String showCards(String loginToken);
 
 }
