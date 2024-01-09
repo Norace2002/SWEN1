@@ -138,7 +138,7 @@ public class PackageRepositoryImpl implements PackageRepository{
                     return true;
 
                 } else {
-                    System.out.println("Error trying to buy package. Buy more Coins/ You are not logged in");
+                    System.out.println("Error trying to buy package. Buy more Coins");
                     return false;
                 }
             } catch (SQLException e) {

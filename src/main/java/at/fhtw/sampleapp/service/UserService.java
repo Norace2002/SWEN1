@@ -2,26 +2,21 @@ package at.fhtw.sampleapp.service;
 
 import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
-import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
-import at.fhtw.sampleapp.model.User;
 import at.fhtw.sampleapp.dal.UnitOfWork;
-import at.fhtw.sampleapp.dal.repository.UserRepository;
 import at.fhtw.sampleapp.dal.repository.UserRepositoryImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 //Object Mapper stuff
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
-import java.util.Objects;
+
+import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class UserService extends AbstractService {
 
-    public UserService() {
-        //this.userRepository = new UserRepositoryImpl(new UnitOfWork());
-    }
+    public UserService() {}
 
     //extracts Data out of given Json styled string
     public String extractData(String userData, String keyword) throws JsonProcessingException {
@@ -65,6 +60,7 @@ public class UserService extends AbstractService {
 
     }
 
+
     public Response compareUserToDatabase(String userData) {
         UnitOfWork unitOfWork = new UnitOfWork();
         String serverResponse = "FAILURE";
@@ -91,13 +87,20 @@ public class UserService extends AbstractService {
         }
     }
 
-    public Response showCardsPerRepository(String loginToken) {
+
+    public Response showUserDataPerRepository(String token, String username) {
         UnitOfWork unitOfWork = new UnitOfWork();
         String serverResponse = "Failure";
 
+        //check if user is logged in
+        if(username.isEmpty() || !Objects.equals(token, username)){
+            System.out.println("Unauthorized! Please log in first!");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+        }
+
         try (unitOfWork){
-            //create Repository and create User if not already exists
-            serverResponse = new UserRepositoryImpl(unitOfWork).showCards(loginToken);
+            //create Repository and shows the user's stats
+            serverResponse = new UserRepositoryImpl(unitOfWork).showUserdata(username);
 
             //commit changed db entry
             unitOfWork.commitTransaction();
@@ -111,18 +114,52 @@ public class UserService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[The user has cards, the response contains these]");
+            return new Response(HttpStatus.OK, ContentType.JSON, "[Data successfully retrieved]");
         }
-        else if(Objects.equals(serverResponse, "EMPTY")){
-            return new Response(HttpStatus.NO_CONTENT, ContentType.JSON, "[The request was fine, but the user doesn't have any cards]");
+        else if(Objects.equals(serverResponse, "NotFound")){
+            return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[User not found.]");
         }
         else{
             return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
 
         }
-
     }
 
+    public Response fillUserDataPerRepository(String token, String username, String userData) {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        String serverResponse = "Failure";
 
+        //check if user is logged in
+        if(username.isEmpty() || !Objects.equals(token, username)){
+            System.out.println("Unauthorized! Please log in first!");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+        }
+
+        try (unitOfWork){
+            //create Repository and shows the user's stats
+            serverResponse = new UserRepositoryImpl(unitOfWork).fillUserdata(username, extractData(userData, "Name"), extractData(userData, "Bio"), extractData(userData, "Image"));
+
+            //commit changed db entry
+            unitOfWork.commitTransaction();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            unitOfWork.rollbackTransaction();
+
+            throw new RuntimeException(e);
+        }
+
+        //Server Response
+        if(Objects.equals(serverResponse, "OK")){
+            return new Response(HttpStatus.OK, ContentType.JSON, "[User successfully updated.]");
+        }
+        else if(Objects.equals(serverResponse, "NotFound")){
+            return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[User not found.]");
+        }
+        else{
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+
+        }
+    }
 
 }

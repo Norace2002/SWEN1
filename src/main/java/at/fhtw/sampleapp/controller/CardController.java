@@ -7,15 +7,16 @@ import at.fhtw.httpserver.server.HeaderMap;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.RestController;
-import at.fhtw.sampleapp.service.UserService;
+import at.fhtw.sampleapp.service.CardService;
 
 import java.util.Collections;
 import java.util.Objects;
 
-public class UserController implements RestController {
-    private final UserService userService;
+public class CardController  implements RestController {
 
-    public UserController() {this.userService = new UserService();}
+    private final CardService cardService;
+
+    public CardController() {this.cardService = new CardService();}
 
     private String authorize(HeaderMap headerMap){
         String token = "";
@@ -42,21 +43,15 @@ public class UserController implements RestController {
     @Override
     public Response handleRequest(Request request) {
 
-
-
-        if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/users")) {
-            return this.userService.createUserPerRepository(request.getBody());
+        if(request.getMethod() == Method.GET && Objects.equals(request.getServiceRoute(), "/cards")){
+            return this.cardService.showCardsPerRepository(authorize(request.getHeaderMap()));
         }
-        else if(request.getMethod() == Method.GET && request.getPathParts().size() == 2 && Objects.equals(request.getPathParts().get(0), "users")) {
-            return this.userService.showUserDataPerRepository(authorize(request.getHeaderMap()), request.getPathParts().get(1));
+        else if(request.getMethod() == Method.GET && Objects.equals(request.getServiceRoute(), "/deck")){
+            return this.cardService.showDeckPerRepository(request.getParams(), authorize(request.getHeaderMap()));
         }
-        else if(request.getMethod() == Method.PUT && request.getPathParts().size() == 2 && Objects.equals(request.getPathParts().get(0), "users")) {
-            return this.userService.fillUserDataPerRepository(authorize(request.getHeaderMap()), request.getPathParts().get(1), request.getBody());
+        else if(request.getMethod() == Method.PUT && Objects.equals(request.getServiceRoute(), "/deck")) {
+            return this.cardService.chooseDeckPerRepository(request.getBody(), authorize(request.getHeaderMap()));
         }
-        else if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/sessions")) {
-            return this.userService.compareUserToDatabase(request.getBody());
-        }
-
 
         return new Response(
                 HttpStatus.BAD_REQUEST,
