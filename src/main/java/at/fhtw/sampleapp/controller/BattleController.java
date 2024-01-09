@@ -7,15 +7,16 @@ import at.fhtw.httpserver.server.HeaderMap;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.RestController;
-import at.fhtw.sampleapp.service.UserService;
+import at.fhtw.sampleapp.service.BattleService;
 
 import java.util.Collections;
 import java.util.Objects;
 
-public class UserController implements RestController {
-    private final UserService userService;
+public class BattleController implements RestController {
 
-    public UserController() {this.userService = new UserService();}
+    private final BattleService battleService;
+
+    public BattleController() {this.battleService = new BattleService();}
 
     private String authorize(HeaderMap headerMap){
         String token = "";
@@ -44,18 +45,9 @@ public class UserController implements RestController {
 
 
 
-        if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/users")) {
-            return this.userService.createUserPerRepository(request.getBody());
-        }
-        else if(request.getMethod() == Method.GET && request.getPathParts().size() == 2 && Objects.equals(request.getPathParts().get(0), "users")) {
-            return this.userService.showUserDataPerRepository(authorize(request.getHeaderMap()), request.getPathParts().get(1));
-        }
-        else if(request.getMethod() == Method.PUT && request.getPathParts().size() == 2 && Objects.equals(request.getPathParts().get(0), "users")) {
-            return this.userService.fillUserDataPerRepository(authorize(request.getHeaderMap()), request.getPathParts().get(1), request.getBody());
-        }
-        else if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/sessions")) {
-            return this.userService.compareUserToDatabase(request.getBody());
-        }
+        /*if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/battles")) {
+            //return this.userService.createBattlePerRepository(request.getBody());
+        }*/
 
 
         return new Response(
@@ -64,4 +56,5 @@ public class UserController implements RestController {
                 "[Path is not implemented]"
         );
     }
+
 }

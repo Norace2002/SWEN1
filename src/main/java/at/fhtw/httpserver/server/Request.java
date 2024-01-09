@@ -19,8 +19,7 @@ public class Request {
     public String getServiceRoute(){
         String path = "/";
 
-        if (this.pathParts == null ||
-                this.pathParts.isEmpty()) {
+        if (this.pathParts == null || this.pathParts.isEmpty()) {
             return null;
         }
 

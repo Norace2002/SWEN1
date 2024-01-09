@@ -164,7 +164,7 @@ public class PackageService extends AbstractService{
         if(Objects.equals(serverResponse, "OK")){
             return new Response(HttpStatus.OK, ContentType.JSON, "[A package has been successfully bought]");
         }
-        else if(Objects.equals(serverResponse, "notAdmin")){
+        else if(Objects.equals(serverResponse, "noCoins")){
             return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[Not enough money for buying a card package]");
         }
         else{

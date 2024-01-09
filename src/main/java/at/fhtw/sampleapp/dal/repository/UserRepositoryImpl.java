@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class UserRepositoryImpl implements UserRepository{
 
@@ -89,21 +91,12 @@ public class UserRepositoryImpl implements UserRepository{
         }
     }
 
-    public String showCards(String loginToken) {
-        if(loginToken.isEmpty()){
-            System.out.println("Please log in first!");
-            return "ERR";
-        }
-        //split the token in two parts
-        String[] parts = loginToken.split("-");
 
-        //extract username out of token
-        String username = parts[0];
-
+    public String showUserdata(String username){
         try (PreparedStatement preparedStatement =
                      this.unitOfWork.prepareStatement("""
-            SELECT * FROM cards
-            WHERE owner = ?
+            SELECT username, name, bio, image FROM accounts
+            WHERE username = ?
             """))
         {
             //Fill in the '?'
@@ -111,28 +104,22 @@ public class UserRepositoryImpl implements UserRepository{
 
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                System.out.println("*********************** Cards from " + username + " ***************************");
-
                 if (resultSet.next()) {
                     do {
                         // Retrieve values from the current row
-                        String cardId = resultSet.getString("ccid");
                         String name = resultSet.getString("name");
-                        double damage = resultSet.getDouble("damage");
+                        String bio = resultSet.getString("bio");
+                        String image = resultSet.getString("image");
 
                         // Print or process the retrieved values
-                        System.out.println("----------------------");
-                        System.out.println("Card ID: " + cardId);
-                        System.out.println("Name: " + name);
-                        System.out.println("Damage: " + damage);
+                        System.out.println("Profil from " + username + ": Name: " + name + " | Bio : " + bio + " | Image : " + image);
+
                     } while (resultSet.next());
 
-                    System.out.println("----------------------");
-                    System.out.println("***************************************************************");
                     return "OK";
                 } else {
-                    System.out.println("No cards found for " + username);
-                    return "EMPTY";
+                    System.out.println("User not found");
+                    return "NotFound";
                 }
             } catch (SQLException e) {
                 throw new DataAccessException("Query not successful", e);
@@ -145,5 +132,39 @@ public class UserRepositoryImpl implements UserRepository{
         }
     }
 
+
+    public String fillUserdata(String username, String name, String bio, String image){
+        try (PreparedStatement preparedStatement =
+                     this.unitOfWork.prepareStatement("""
+            UPDATE accounts
+            SET name = ?,
+                bio = ?,
+                image = ?
+            WHERE username = ?
+            """))
+        {
+            //Fill in the '?'
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, bio);
+            preparedStatement.setString(3, image);
+            preparedStatement.setString(4, username);
+
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("User data was successfully changed");
+                return "OK";
+            }
+            else {
+                System.out.println("User not found");
+                return "NotFound";
+            }
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Update not successful", e);
+        }
+
+    }
 
 }
