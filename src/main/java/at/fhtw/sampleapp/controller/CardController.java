@@ -52,6 +52,18 @@ public class CardController  implements RestController {
         else if(request.getMethod() == Method.PUT && Objects.equals(request.getServiceRoute(), "/deck")) {
             return this.cardService.chooseDeckPerRepository(request.getBody(), authorize(request.getHeaderMap()));
         }
+        else if(request.getMethod() == Method.GET && Objects.equals(request.getServiceRoute(), "/tradings")) {
+            return this.cardService.showTradesPerRepository(authorize(request.getHeaderMap()));
+        }
+        else if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/tradings")) {
+            return this.cardService.tradeCardPerRepository(request.getBody(), authorize(request.getHeaderMap()));
+        }
+        else if(request.getMethod() == Method.DELETE && request.getPathParts().size() == 2 && Objects.equals(request.getPathParts().get(0), "tradings")) {
+            return this.cardService.deleteTradePerRepository(authorize(request.getHeaderMap()), request.getPathParts().get(1));
+        }
+        else if(request.getMethod() == Method.POST && request.getPathParts().size() == 2 && Objects.equals(request.getPathParts().get(0), "tradings")) {
+            return this.cardService.acceptTradePerRepository(authorize(request.getHeaderMap()), request.getPathParts().get(1), request.getBody());
+        }
 
         return new Response(
                 HttpStatus.BAD_REQUEST,

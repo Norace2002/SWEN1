@@ -1,11 +1,5 @@
 package at.fhtw.sampleapp.dal.repository;
 
-import at.fhtw.sampleapp.model.Package;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 public interface PackageRepository {
 
     //create package

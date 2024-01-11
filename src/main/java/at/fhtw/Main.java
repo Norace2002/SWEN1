@@ -42,14 +42,15 @@ public class Main {
         //Card Services
         router.addService("/cards", new CardController());
         router.addService("/deck", new CardController());
-        //router.addService("/tradings", new CardController());
+        router.addService("/tradings", new CardController());
+        router.addService("/tradings/{ttid}", new CardController());
 
         //Stat Services
         router.addService("/stats", new StatController());
         router.addService("/scoreboard", new StatController());
 
         //Battle Services
-        //router.addService("/battles", new BattleController());
+        router.addService("/battles", new BattleController());
 
 
 

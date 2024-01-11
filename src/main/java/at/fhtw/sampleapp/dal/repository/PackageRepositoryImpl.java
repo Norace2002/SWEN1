@@ -10,10 +10,8 @@ import lombok.Getter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PackageRepositoryImpl implements PackageRepository{
@@ -58,15 +56,32 @@ public class PackageRepositoryImpl implements PackageRepository{
         //Insert card data and return primary key to return it
         try (PreparedStatement preparedStatement =
                      this.unitOfWork.prepareStatement("""
-                     INSERT INTO cards (ccid, name, damage)
-                     VALUES (?, ?, ?)
+                     INSERT INTO cards (ccid, name, type, damage)
+                     VALUES (?, ?, ?, ?)
                      ON CONFLICT (ccid) DO NOTHING
                      RETURNING ccid
                      """)){
             //Fill the '?'
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, name);
-            preparedStatement.setDouble(3, damage);
+
+
+            //fill type for tradings purposes later
+            //Regular expression is used to match the first uppercase letter
+            String regex = "(?=[A-Z])";
+
+            //We split the input string using the regex
+            String[] parts = name.split(regex, 2);
+
+            if(parts.length == 2 && Objects.equals(parts[1], "Spell")){
+                preparedStatement.setString(3, "spell");
+            }
+            else{
+                preparedStatement.setString(3, "monster");
+            }
+
+            preparedStatement.setDouble(4, damage);
+
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
