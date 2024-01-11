@@ -42,12 +42,9 @@ public class BattleController implements RestController {
 
     @Override
     public Response handleRequest(Request request) {
-
-
-
-        /*if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/battles")) {
-            //return this.userService.createBattlePerRepository(request.getBody());
-        }*/
+        if(request.getMethod() == Method.POST && Objects.equals(request.getServiceRoute(), "/battles")) {
+            return this.battleService.createBattlePerRepository(authorize(request.getHeaderMap()));
+        }
 
 
         return new Response(

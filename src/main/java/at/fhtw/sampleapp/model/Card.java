@@ -3,14 +3,16 @@ package at.fhtw.sampleapp.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class Card {
     @JsonAlias({"id"})
-    private Integer id;
+    private String id;
     @JsonAlias({"name"})
     private String name;
     @JsonAlias({"damage"})
-    private Integer damage;
+    private Double damage;
     @JsonAlias({"elementType"})
     private String elementType;
     @JsonAlias({"cardType"})
@@ -19,7 +21,7 @@ public class Card {
     // Default constructor
     public Card() {}
 
-    public Card(Integer id, String name, Integer damage, String elementType, String cardType) {
+    public Card(String id, String name, double damage, String elementType, String cardType) {
         this.id = id;
         this.name = name;
         this.damage = damage;
@@ -28,15 +30,36 @@ public class Card {
     }
 
     //Setter
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public void setName(String name) {
+        //declare card name
         this.name = name;
+
+
+        //Extract Card type and element type
+        if (Objects.equals(name, "Dragon")){
+            setElementType("Fire");
+        }
+        else if(Objects.equals(name, "Knight") || Objects.equals(name, "Ork")){
+            setElementType("Regular");
+        }
+        else if(Objects.equals(name, "Kraken")){
+            setElementType("Water");
+        }
+        else{
+            //Regular expression is used to match the first uppercase letter
+            String regex = "(?=[A-Z])";
+
+            //We split the input string using the regex
+            String[] parts = name.split(regex, 2);
+            setElementType(parts[0]);
+        }
     }
 
-    public void setDamage(Integer damage) {
+    public void setDamage(Double damage) {
         this.damage = damage;
     }
 
@@ -46,6 +69,22 @@ public class Card {
 
     public void setCardType(String cardType) {
         this.cardType = cardType;
+    }
+
+    public double getElementDamage(String enemyElement){
+        if((Objects.equals(this.elementType, "Water") && Objects.equals(enemyElement, "Fire")) ||
+                (Objects.equals(this.elementType, "Fire") && Objects.equals(enemyElement, "Regular")) ||
+                (Objects.equals(this.elementType, "Regular") && Objects.equals(enemyElement, "Water"))){
+            return damage*2;
+        }
+        else if((Objects.equals(this.elementType, "Fire") && Objects.equals(enemyElement, "Water")) ||
+                (Objects.equals(this.elementType, "Regular") && Objects.equals(enemyElement, "Fire")) ||
+                (Objects.equals(this.elementType, "Water") && Objects.equals(enemyElement, "Regular"))){
+            return damage*0.5;
+        }
+        else{
+            return damage;
+        }
     }
 
 }
