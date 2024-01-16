@@ -45,7 +45,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
 
@@ -71,7 +71,7 @@ public class CardService extends AbstractService{
             return new Response(HttpStatus.NO_CONTENT, ContentType.JSON, "[The request was fine, but the user doesn't have any cards]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
 
@@ -112,7 +112,7 @@ public class CardService extends AbstractService{
             return new Response(HttpStatus.NO_CONTENT, ContentType.JSON, "[The request was fine, but the deck doesn't have any cards]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
     }
@@ -174,7 +174,7 @@ public class CardService extends AbstractService{
             return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[At least one of the provided cards does not belong to the user or is not available.]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
 
@@ -188,7 +188,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
 
@@ -222,7 +222,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -266,7 +266,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
 
@@ -314,7 +314,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -375,7 +375,7 @@ public class CardService extends AbstractService{
             return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[The provided deal ID was not found.]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
     }
 

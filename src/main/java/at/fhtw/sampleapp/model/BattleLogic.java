@@ -3,6 +3,8 @@ package at.fhtw.sampleapp.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -131,7 +133,9 @@ public class BattleLogic {
         }
     }
 
-    public void start(){
+    public List<String> start(){
+        List<String> battleInfo = new ArrayList<>();
+
         //Battles are limited to 100 rounds
         for(int roundCounter = 1; roundCounter <= 100; ++roundCounter){
 
@@ -149,12 +153,20 @@ public class BattleLogic {
 
         if(user1.gameOver()){
             System.out.println("** "+ user2.getUsername() + " wins!!! **");
+            battleInfo.add(user2.getUsername());
+            battleInfo.add(user1.getUsername());
+            return battleInfo;
         }
         else if(user2.gameOver()){
             System.out.println("** "+ user1.getUsername() + " wins!!! **");
+            battleInfo.add(user1.getUsername());
+            battleInfo.add(user2.getUsername());
+            return battleInfo;
         }
         else{
             System.out.println("The battle exceeded 100 Rounds. Therefore its a draw!!!");
+            battleInfo.add("DRAW");
+            return battleInfo;
         }
     }
 

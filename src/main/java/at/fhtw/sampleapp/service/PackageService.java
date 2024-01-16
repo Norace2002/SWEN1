@@ -101,7 +101,7 @@ public class PackageService extends AbstractService{
             return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[Provided user is not \"admin\"]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
     }
@@ -168,7 +168,7 @@ public class PackageService extends AbstractService{
             return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[Not enough money for buying a card package]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
     }

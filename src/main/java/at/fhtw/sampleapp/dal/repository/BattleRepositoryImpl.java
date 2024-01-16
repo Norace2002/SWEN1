@@ -56,4 +56,36 @@ public class BattleRepositoryImpl implements BattleRepository{
         return deck;
     }
 
+
+    public String adjustELO(String username, int value){
+        try (PreparedStatement preparedStatement =
+                     this.unitOfWork.prepareStatement("""
+            UPDATE accounts
+            SET eloscore = eloscore + ?
+            WHERE username = ?
+            """))
+        {
+            //Fill in the '?'
+            preparedStatement.setInt(1, value);
+            preparedStatement.setString(2, username);
+
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Eloscore from " + username + " was changed correctly");
+                return "OK";
+            }
+            else {
+                System.out.println("Error, trying to change eloscore from " + username);
+                return "ERR";
+            }
+
+
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Select not successful", e);
+        }
+    }
+
 }
