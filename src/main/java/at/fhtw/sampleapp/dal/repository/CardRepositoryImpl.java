@@ -404,7 +404,6 @@ public class CardRepositoryImpl implements CardRepository{
 
 
             int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println("Rows Affected: " + rowsAffected);
 
             if (rowsAffected > 0) {
                 System.out.println("Ownership change complete");

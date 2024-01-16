@@ -95,7 +95,7 @@ public class UserService extends AbstractService {
         //check if user is logged in
         if(username.isEmpty() || !Objects.equals(token, username)){
             System.out.println("Unauthorized! Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -120,7 +120,7 @@ public class UserService extends AbstractService {
             return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[User not found.]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
     }
@@ -132,7 +132,7 @@ public class UserService extends AbstractService {
         //check if user is logged in
         if(username.isEmpty() || !Objects.equals(token, username)){
             System.out.println("Unauthorized! Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -157,7 +157,7 @@ public class UserService extends AbstractService {
             return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[User not found.]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
     }

@@ -8,6 +8,10 @@ import at.fhtw.sampleapp.dal.repository.StatRepositoryImpl;
 
 import java.util.*;
 
+//Test import
+import at.fhtw.sampleapp.model.UnitTestClass;
+
+
 public class StatService extends AbstractService {
 
     public StatService() {}
@@ -22,6 +26,10 @@ public class StatService extends AbstractService {
         }
 
         try (unitOfWork){
+            /*Just for testing
+            UnitTestClass test = new UnitTestClass();
+            test.testBattle();*/
+
             //create Repository and shows the user's stats
             serverResponse = new StatRepositoryImpl(unitOfWork).showStats(username);
 
@@ -40,7 +48,7 @@ public class StatService extends AbstractService {
             return new Response(HttpStatus.OK, ContentType.JSON, "[The stats could be retrieved successfully.]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
     }
@@ -73,7 +81,7 @@ public class StatService extends AbstractService {
             return new Response(HttpStatus.OK, ContentType.JSON, "[The scoreboard could be retrieved successfully.]");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "['#/components/responses/UnauthorizedError']");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
 
         }
     }
