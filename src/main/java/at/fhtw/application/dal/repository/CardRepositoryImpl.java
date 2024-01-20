@@ -67,7 +67,8 @@ public class CardRepositoryImpl implements CardRepository{
         }
     }
 
-    public String showDeck(String username){
+    public String showDeck(String param, String username){
+        String deckJsonFormat = "[";
 
         try (PreparedStatement preparedStatement =
                      this.unitOfWork.prepareStatement("""
@@ -89,16 +90,35 @@ public class CardRepositoryImpl implements CardRepository{
                         String name = resultSet.getString("name");
                         double damage = resultSet.getDouble("damage");
 
-                        // Print or process the retrieved values
-                        System.out.println("----------------------");
-                        System.out.println("Card ID: " + cardId);
-                        System.out.println("Name: " + name);
-                        System.out.println("Damage: " + damage);
+
+                        if(!Objects.equals(param, "format=plain")){
+                            deckJsonFormat = deckJsonFormat.concat("{")
+                                    .concat("\"CardID\":\"").concat(cardId).concat("\",")
+                                    .concat("\"Name\":\"").concat(name).concat("\",")
+                                    .concat("\"Damage\":").concat(String.valueOf(damage)).concat("}");
+                        }
+                        else{
+                            // Print or process the retrieved values
+                            System.out.println("----------------------");
+                            System.out.println("Card ID: " + cardId);
+                            System.out.println("Name: " + name);
+                            System.out.println("Damage: " + damage);
+                        }
+
                     } while (resultSet.next());
 
-                    System.out.println("----------------------");
-                    System.out.println("***************************************************************");
-                    return "OK";
+                    if(!Objects.equals(param, "format=plain")){
+                        deckJsonFormat = deckJsonFormat.concat("]");
+                        System.out.println(deckJsonFormat);
+                        System.out.println("***************************************************************");
+                        return deckJsonFormat;
+                    }
+                    else{
+                        System.out.println("----------------------");
+                        System.out.println("***************************************************************");
+                        return "OK";
+                    }
+
                 } else {
                     System.out.println(username + "'s battledeck is empty.");
                     System.out.println("***************************************************************");

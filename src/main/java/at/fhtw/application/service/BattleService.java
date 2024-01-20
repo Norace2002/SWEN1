@@ -46,7 +46,7 @@ public class BattleService {
 
         try (unitOfWork){
             if(Objects.equals(username, "")){
-                return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+                return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
             }
 
@@ -96,10 +96,10 @@ public class BattleService {
 
                                 //Send server response
                                 if(Objects.equals(serverResponse, "OK")){
-                                    return new Response(HttpStatus.OK, ContentType.JSON, "[The battle has been carried out successfully.]");
+                                    return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "The battle has been carried out successfully.");
                                 }
                                 else{
-                                    return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+                                    return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
                                 }
                             }
                         }

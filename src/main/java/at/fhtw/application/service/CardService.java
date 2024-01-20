@@ -44,7 +44,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
 
@@ -64,13 +64,13 @@ public class CardService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[The user has cards, the response contains these]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "The user has cards, the response contains these");
         }
         else if(Objects.equals(serverResponse, "EMPTY")){
-            return new Response(HttpStatus.NO_CONTENT, ContentType.JSON, "[The request was fine, but the user doesn't have any cards]");
+            return new Response(HttpStatus.NO_CONTENT, ContentType.PLAIN_TEXT, "The request was fine, but the user doesn't have any cards");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
 
@@ -79,7 +79,6 @@ public class CardService extends AbstractService{
     public Response showDeckPerRepository(String param, String username) {
         UnitOfWork unitOfWork = new UnitOfWork();
         String serverResponse = "Failure";
-        System.out.println(param);
 
         //check if user is logged in
         if(username.isEmpty()){
@@ -88,7 +87,7 @@ public class CardService extends AbstractService{
 
         try (unitOfWork){
             //create Repository and shows the user's battledeck
-            serverResponse = new CardRepositoryImpl(unitOfWork).showDeck(username);
+            serverResponse = new CardRepositoryImpl(unitOfWork).showDeck(param, username);
 
             //commit changed db entry
             unitOfWork.commitTransaction();
@@ -101,17 +100,18 @@ public class CardService extends AbstractService{
         }
 
         //Server Response
-        if(Objects.equals(serverResponse, "OK")){
+        if(Objects.equals(serverResponse, "OK") || serverResponse.startsWith("[{")){
             if(Objects.equals(param, "format=plain")){
-                return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "[The deck has cards, the response contains these]");
+                System.out.println("check");
+                return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "The deck has cards, the response contains these");
             }
-            return new Response(HttpStatus.OK, ContentType.JSON, "[The deck has cards, the response contains these]");
+            return new Response(HttpStatus.OK, ContentType.JSON, serverResponse);
         }
         else if(Objects.equals(serverResponse, "EMPTY")){
-            return new Response(HttpStatus.NO_CONTENT, ContentType.JSON, "[The request was fine, but the deck doesn't have any cards]");
+            return new Response(HttpStatus.NO_CONTENT, ContentType.PLAIN_TEXT, "The request was fine, but the deck doesn't have any cards");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
     }
@@ -164,16 +164,16 @@ public class CardService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[The deck has been successfully configured]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "The deck has been successfully configured");
         }
         else if(Objects.equals(serverResponse, "wrongAmount")){
-            return new Response(HttpStatus.BAD_REQUEST, ContentType.JSON, "[The provided deck did not include the required amount of cards]");
+            return new Response(HttpStatus.BAD_REQUEST, ContentType.PLAIN_TEXT, "The provided deck did not include the required amount of cards");
         }
         else if(Objects.equals(serverResponse, "cardFailure")){
-            return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[At least one of the provided cards does not belong to the user or is not available.]");
+            return new Response(HttpStatus.FORBIDDEN, ContentType.PLAIN_TEXT, "At least one of the provided cards does not belong to the user or is not available.");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
 
@@ -187,7 +187,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
 
@@ -207,10 +207,10 @@ public class CardService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[There are trading deals available, the response contains these]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "There are trading deals available, the response contains these");
         }
         else{
-            return new Response(HttpStatus.NO_CONTENT, ContentType.JSON, "[The request was fine, but there are no trading deals available]");
+            return new Response(HttpStatus.NO_CONTENT, ContentType.PLAIN_TEXT, "The request was fine, but there are no trading deals available");
         }
     }
 
@@ -221,7 +221,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -247,13 +247,13 @@ public class CardService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.CREATED, ContentType.JSON, "[Trading deal successfully created]");
+            return new Response(HttpStatus.CREATED, ContentType.PLAIN_TEXT, "Trading deal successfully created");
         }
         else if(Objects.equals(serverResponse, "FORBIDDEN")){
-            return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[The deal contains a card that is not owned by the user or locked in the deck.]");
+            return new Response(HttpStatus.FORBIDDEN, ContentType.PLAIN_TEXT, "The deal contains a card that is not owned by the user or locked in the deck.");
         }
         else{
-            return new Response(HttpStatus.CONFLICT, ContentType.JSON, "[A deal with this deal ID already exists.]");
+            return new Response(HttpStatus.CONFLICT, ContentType.PLAIN_TEXT, "A deal with this deal ID already exists.");
         }
     }
 
@@ -265,7 +265,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
 
@@ -292,13 +292,13 @@ public class CardService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[Trading deal successfully deleted]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "Trading deal successfully deleted");
         }
         else if(Objects.equals(serverResponse, "FORBIDDEN")){
-            return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[The deal contains a card that is not owned by the user.]");
+            return new Response(HttpStatus.FORBIDDEN, ContentType.PLAIN_TEXT, "The deal contains a card that is not owned by the user.");
         }
         else{
-            return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[The provided deal ID was not found.]");
+            return new Response(HttpStatus.NOT_FOUND, ContentType.PLAIN_TEXT, "The provided deal ID was not found.");
         }
     }
 
@@ -313,7 +313,7 @@ public class CardService extends AbstractService{
         //check if user is logged in
         if(username.isEmpty()){
             System.out.println("Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -365,16 +365,16 @@ public class CardService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[Trading deal successfully executed.]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "Trading deal successfully executed.");
         }
         else if(Objects.equals(serverResponse, "FORBIDDEN")){
-            return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[The offered card is not owned by the user, or the requirements are not met (Type, MinimumDamage), or the offered card is locked in the deck.]");
+            return new Response(HttpStatus.FORBIDDEN, ContentType.PLAIN_TEXT, "The offered card is not owned by the user, or the requirements are not met (Type, MinimumDamage), or the offered card is locked in the deck.");
         }
         else if(!Objects.equals(serverResponse, "DOUBLE")){
-            return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[The provided deal ID was not found.]");
+            return new Response(HttpStatus.NOT_FOUND, ContentType.PLAIN_TEXT, "The provided deal ID was not found.");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
     }
 

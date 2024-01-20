@@ -40,10 +40,10 @@ public class StatService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[The stats could be retrieved successfully.]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "The stats could be retrieved successfully.");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
     }
@@ -73,10 +73,10 @@ public class StatService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[The scoreboard could be retrieved successfully.]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "The scoreboard could be retrieved successfully.");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
     }
