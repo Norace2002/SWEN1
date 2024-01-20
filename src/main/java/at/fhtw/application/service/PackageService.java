@@ -68,7 +68,7 @@ public class PackageService extends AbstractService{
                 //check if there is a card that already exits n the package
                 for (String card : cardIDs) {
                     if(Objects.equals(card, "DOUBLE")){
-                        return new Response(HttpStatus.CONFLICT, ContentType.JSON, "[At least one card in the packages already exists]");
+                        return new Response(HttpStatus.CONFLICT, ContentType.PLAIN_TEXT, "At least one card in the packages already exists");
 
                     }
                 }
@@ -92,13 +92,13 @@ public class PackageService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.CREATED, ContentType.JSON, "[Package and cards successfully created]");
+            return new Response(HttpStatus.CREATED, ContentType.PLAIN_TEXT, "Package and cards successfully created");
         }
         else if(Objects.equals(serverResponse, "notAdmin")){
-            return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[Provided user is not \"admin\"]");
+            return new Response(HttpStatus.FORBIDDEN, ContentType.PLAIN_TEXT, "Provided user is not \"admin\"");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
     }
@@ -125,7 +125,7 @@ public class PackageService extends AbstractService{
                 //Check if there was a package left
                 for (String cardID : cardIDArray) {
                     if(Objects.equals(cardID, null)){
-                        return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[No card package available for buying]");
+                        return new Response(HttpStatus.NOT_FOUND, ContentType.PLAIN_TEXT, "No card package available for buying");
                     }
                 }
 
@@ -159,13 +159,13 @@ public class PackageService extends AbstractService{
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[A package has been successfully bought]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "A package has been successfully bought");
         }
         else if(Objects.equals(serverResponse, "noCoins")){
-            return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "[Not enough money for buying a card package]");
+            return new Response(HttpStatus.FORBIDDEN, ContentType.PLAIN_TEXT, "Not enough money for buying a card package");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
     }

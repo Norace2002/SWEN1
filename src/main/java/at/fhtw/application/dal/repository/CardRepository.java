@@ -6,7 +6,7 @@ public interface CardRepository {
 
     //Cards
     String showCards(String username);
-    String showDeck(String username);
+    String showDeck(String param, String username);
     void resetDeck(String username);
     String configureDeck(List<String> cardIds, String username);
 

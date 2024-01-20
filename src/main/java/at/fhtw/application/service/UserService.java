@@ -52,10 +52,10 @@ public class UserService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[User successfully created]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "User successfully created");
         }
         else{
-            return new Response(HttpStatus.CONFLICT, ContentType.JSON, "[User with same username already registered]");
+            return new Response(HttpStatus.CONFLICT, ContentType.PLAIN_TEXT, "User with same username already registered");
         }
 
     }
@@ -80,10 +80,10 @@ public class UserService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[User login successful]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "User login successful");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "[Invalid username/password provided]");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Invalid username/password provided");
         }
     }
 
@@ -95,7 +95,7 @@ public class UserService extends AbstractService {
         //check if user is logged in
         if(username.isEmpty() || !Objects.equals(token, username)){
             System.out.println("Unauthorized! Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -114,13 +114,13 @@ public class UserService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[Data successfully retrieved]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "Data successfully retrieved");
         }
         else if(Objects.equals(serverResponse, "NotFound")){
-            return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[User not found.]");
+            return new Response(HttpStatus.NOT_FOUND, ContentType.PLAIN_TEXT, "User not found.");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
     }
@@ -132,7 +132,7 @@ public class UserService extends AbstractService {
         //check if user is logged in
         if(username.isEmpty() || !Objects.equals(token, username)){
             System.out.println("Unauthorized! Please log in first!");
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
         }
 
         try (unitOfWork){
@@ -151,13 +151,13 @@ public class UserService extends AbstractService {
 
         //Server Response
         if(Objects.equals(serverResponse, "OK")){
-            return new Response(HttpStatus.OK, ContentType.JSON, "[User successfully updated.]");
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, "User successfully updated.");
         }
         else if(Objects.equals(serverResponse, "NotFound")){
-            return new Response(HttpStatus.NOT_FOUND, ContentType.JSON, "[User not found.]");
+            return new Response(HttpStatus.NOT_FOUND, ContentType.PLAIN_TEXT, "User not found.");
         }
         else{
-            return new Response(HttpStatus.UNAUTHORIZED, ContentType.JSON, "Access token is missing or invalid");
+            return new Response(HttpStatus.UNAUTHORIZED, ContentType.PLAIN_TEXT, "Access token is missing or invalid");
 
         }
     }
