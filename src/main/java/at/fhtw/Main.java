@@ -1,16 +1,12 @@
 package at.fhtw;
 
-import at.fhtw.httpserver.http.Method;
-import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.httpserver.utils.Router;
-import at.fhtw.sampleapp.controller.UserController;
-import at.fhtw.sampleapp.service.UserService;
-import at.fhtw.sampleapp.controller.PackageController;
-import at.fhtw.sampleapp.service.PackageService;
-import at.fhtw.sampleapp.controller.CardController;
-import at.fhtw.sampleapp.controller.StatController;
-import at.fhtw.sampleapp.controller.BattleController;
+import at.fhtw.application.controller.UserController;
+import at.fhtw.application.controller.PackageController;
+import at.fhtw.application.controller.CardController;
+import at.fhtw.application.controller.StatController;
+import at.fhtw.application.controller.BattleController;
 
 
 
